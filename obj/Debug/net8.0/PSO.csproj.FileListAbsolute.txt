@@ -1,0 +1,14 @@
+C:\Users\TICS\Downloads\PSO-2\PSO-2\bin\Debug\net8.0\PSO.exe
+C:\Users\TICS\Downloads\PSO-2\PSO-2\bin\Debug\net8.0\PSO.deps.json
+C:\Users\TICS\Downloads\PSO-2\PSO-2\bin\Debug\net8.0\PSO.runtimeconfig.json
+C:\Users\TICS\Downloads\PSO-2\PSO-2\bin\Debug\net8.0\PSO.dll
+C:\Users\TICS\Downloads\PSO-2\PSO-2\bin\Debug\net8.0\PSO.pdb
+C:\Users\TICS\Downloads\PSO-2\PSO-2\obj\Debug\net8.0\PSO.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\TICS\Downloads\PSO-2\PSO-2\obj\Debug\net8.0\PSO.AssemblyInfoInputs.cache
+C:\Users\TICS\Downloads\PSO-2\PSO-2\obj\Debug\net8.0\PSO.AssemblyInfo.cs
+C:\Users\TICS\Downloads\PSO-2\PSO-2\obj\Debug\net8.0\PSO.csproj.CoreCompileInputs.cache
+C:\Users\TICS\Downloads\PSO-2\PSO-2\obj\Debug\net8.0\PSO.dll
+C:\Users\TICS\Downloads\PSO-2\PSO-2\obj\Debug\net8.0\refint\PSO.dll
+C:\Users\TICS\Downloads\PSO-2\PSO-2\obj\Debug\net8.0\PSO.pdb
+C:\Users\TICS\Downloads\PSO-2\PSO-2\obj\Debug\net8.0\PSO.genruntimeconfig.cache
+C:\Users\TICS\Downloads\PSO-2\PSO-2\obj\Debug\net8.0\ref\PSO.dll

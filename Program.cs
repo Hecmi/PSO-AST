@@ -27,14 +27,14 @@ namespace PSO
             //double resultado = ast.evaluar(valores_incognitas);
             //Console.WriteLine(resultado);
 
-            string ECUACION = "(10-x)^2+100*(y-x^2)^2";
+            string ECUACION = "(10-x)^2+10*(y-x^2)^2";
             ECUACION = "x^2-100*x+16";
 
-            int NUMERO_PARTICULAS = 30000;
+            int NUMERO_PARTICULAS = 3000;
             int NUMERO_ITERACIONES = 100;
-            double FACTOR_INERCIA = 0.5;
-            double FACTOR_COGNITIVO = 1.5;
-            double FACTOR_SOCIAL = 1.5;
+            double FACTOR_INERCIA = 0.9;
+            double FACTOR_COGNITIVO = 2;
+            double FACTOR_SOCIAL = 1.0;
 
             Clases.PSO pso = new Clases.PSO(
                 NUMERO_PARTICULAS,
@@ -48,8 +48,11 @@ namespace PSO
                 ECUACION
             );
 
-            pso.ejecutar();
-            pso.get_mejor_solucion();
+            for (int i = 0; i < 10; i++)
+            {
+                pso.ejecutar();
+                pso.get_mejor_solucion();
+            }
 
             //Clases.PSO_MIN pso_min = new Clases.PSO_MIN(
             //    NUMERO_PARTICULAS,

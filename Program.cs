@@ -8,42 +8,60 @@ namespace PSO
     {    
         public static void Main()
         {
-            //AST ast = new AST("1/(2^x)");
-            string ecuacion = "(10-x)^2+100*(y-x^2)^2";
-            AST ast = new AST(ecuacion);
-            
-            ast.mostrar_arbol();
+            //string ecuacion = "-(-(-x+1)*(x-8,5)*(x-3))";
+            //AST ast = new AST(ecuacion);
 
-            Dictionary<string, double> valores_incognitas = new Dictionary<string, double>
-            {
-                { "x", 10 },
-                { "y", 100 },
-            };
+            //ast.mostrar_arbol();
 
-            for(int i = 0; i < ast.INCOGNITAS.Count; i++)
-            {
-                Console.WriteLine(ast.INCOGNITAS[i]);
-            }
+            //Dictionary<string, double> valores_incognitas = new Dictionary<string, double>
+            //{
+            //    { "x", 2 },
+            //    { "y", 100 },
+            //};
 
-            double resultado = ast.evaluar(valores_incognitas);
-            Console.WriteLine(resultado);
+            //for (int i = 0; i < ast.INCOGNITAS.Count; i++)
+            //{
+            //    Console.WriteLine(ast.INCOGNITAS[i]);
+            //}
 
-            /*
-            int NUMERO_PARTICULAS = 30;
-            int NUMERO_ITERACIONES = 300;
+            //double resultado = ast.evaluar(valores_incognitas);
+            //Console.WriteLine(resultado);
+
+            string ECUACION = "(10-x)^2+100*(y-x^2)^2";
+            ECUACION = "x^2-100*x+16";
+
+            int NUMERO_PARTICULAS = 30000;
+            int NUMERO_ITERACIONES = 100;
             double FACTOR_INERCIA = 0.5;
             double FACTOR_COGNITIVO = 1.5;
             double FACTOR_SOCIAL = 1.5;
 
             Clases.PSO pso = new Clases.PSO(
-                NUMERO_PARTICULAS, 
-                NUMERO_ITERACIONES, 
-                FACTOR_INERCIA, 
-                FACTOR_COGNITIVO, 
-                FACTOR_SOCIAL
+                NUMERO_PARTICULAS,
+                NUMERO_ITERACIONES,
+                FACTOR_INERCIA,
+                FACTOR_COGNITIVO,
+                FACTOR_SOCIAL,
+                0.2,
+                -1,
+                300,
+                ECUACION
             );
+
             pso.ejecutar();
-            */
+            pso.get_mejor_solucion();
+
+            //Clases.PSO_MIN pso_min = new Clases.PSO_MIN(
+            //    NUMERO_PARTICULAS,
+            //    NUMERO_ITERACIONES,
+            //    FACTOR_INERCIA,
+            //    FACTOR_COGNITIVO,
+            //    FACTOR_SOCIAL,              
+            //    ECUACION
+            //);
+
+            //pso_min.ejecutar();
+            //pso_min.get_mejor_solucion();
         }
     }
 }

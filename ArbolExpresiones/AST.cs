@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PSO.ArbolExpresiones;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,8 +14,13 @@ namespace PSO.ArbolExpresiones
 
         public AST(string expresion)
         {
+            //Eliminar los espacios en blanco de la expresión
+            expresion = expresion.Replace(" ", "");
+
+            //Inicializar la lista de incógnitas
             INCOGNITAS = new List<string>();
 
+            //Construir el árbol a partir de la expresión
             RAIZ = construir_arbol(expresion);
         }
 
@@ -22,18 +28,28 @@ namespace PSO.ArbolExpresiones
         {
             Stack<Nodo> nodos = new Stack<Nodo>();
             Stack<char> operadores = new Stack<char>();
-                        
+
+            //Agregar un caracter cualquiera para validar la obtención de un caracter anterior
+            expresion = "(" + expresion;
+
             //Iterar cada uno de los elementos de la expresión
-            for (int i = 0; i < expresion.Length; i++)
+            for (int i = 1; i < expresion.Length; i++)
             {
                 char c = expresion[i];
+
+                //Se trata de un operador unario                
+                //if (es_operador_unario(c))
+                //{
+                //    nodos.Push(new Nodo("0"));
+                //    operadores.Push(c);
+                //}
 
                 //En caso de que esa un número o una incógnita, entonces
                 //continuar acumulando la operación mientras en la expresión sea numérica (entera o decimal)
                 if (char.IsDigit(c) || c == '.')
                 {
                     string numero = c.ToString();
-                    while (i + 1 < expresion.Length && (char.IsDigit(expresion[i + 1]) || expresion[i + 1] == '.'))
+                    while (i + 1 < expresion.Length && (char.IsDigit(expresion[i + 1]) || expresion[i + 1] == ','))
                     {
                         numero += expresion[++i];
                     }
@@ -41,7 +57,6 @@ namespace PSO.ArbolExpresiones
                 }
                 else if (char.IsLetter(c))
                 {
-                    // Acumulación de incógnitas
                     string incognita = c.ToString();
 
                     while (i + 1 < expresion.Length && char.IsLetterOrDigit(expresion[i + 1]))
@@ -71,15 +86,33 @@ namespace PSO.ArbolExpresiones
                 }
                 else if (es_operador(c))
                 {
-                    //Sí el nuveo operador tiene una precendia menor que la última en cola, entonces
-                    //crear el nuevo nodo de la operación ya que tiene prioridad.
-                    while (operadores.Count > 0 && precedencia_operaciones(c) <= precedencia_operaciones(operadores.Peek()))
+                    //Es unario si el caracter predecesor es un operador o una apertura de paréntesis
+                    //y el actual es un operador unario
+                    bool es_unario = ((es_operador(expresion[i - 1]) || expresion[i - 1] == '(') && es_operador_unario(c));
+
+                    if (es_unario)
                     {
-                        nodos.Push(segmentar_operacion(operadores.Pop(), nodos.Pop(), nodos.Pop()));
+                        nodos.Push(new Nodo("0"));
+                        operadores.Push(c);
+                    }
+                    else
+                    {
+                        //Sí el nuveo operador tiene una precendia menor que la última en cola, entonces
+                        //crear el nuevo nodo de la operación ya que tiene prioridad.
+                        while (operadores.Count > 0 && precedencia_operaciones(c) <= precedencia_operaciones(operadores.Peek()))
+                        {
+                            nodos.Push(segmentar_operacion(operadores.Pop(), nodos.Pop(), nodos.Pop()));
+                        }
+                        operadores.Push(c);
                     }
 
-                    //Agregar el último operador
-                    operadores.Push(c);
+                    //while (operadores.Count > 0 && precedencia_operaciones(c) <= precedencia_operaciones(operadores.Peek()))
+                    //{
+                    //    nodos.Push(segmentar_operacion(operadores.Pop(), nodos.Pop(), nodos.Pop()));
+                    //}
+
+                    ////Agregar el último operador
+                    //operadores.Push(c);
                 }
             }
 
@@ -97,7 +130,12 @@ namespace PSO.ArbolExpresiones
             return c == '+' || c == '-' || c == '*' || c == '/' || c == '^';
         }
 
-        private int precedencia_operaciones (char op)
+        private bool es_operador_unario(char c)
+        {
+            return c == '+' || c == '-';
+        }
+
+        private int precedencia_operaciones(char op)
         {
             if (op == '+' || op == '-') return 1;
             if (op == '*' || op == '/') return 2;
@@ -142,12 +180,10 @@ namespace PSO.ArbolExpresiones
                 imprimir_arbol(nodo.Derecha, espaciado, true);
             }
         }
-
         public void mostrar_arbol()
         {
             imprimir_arbol(RAIZ);
         }
-
 
         public double evaluar(Dictionary<string, double> valores_incognitas)
         {
@@ -174,7 +210,7 @@ namespace PSO.ArbolExpresiones
                 //Sí no existe un valor asociado a la incógnita mostrar error
                 else
                 {
-                    Console.WriteLine($"Error, el valor de la incógnita {nodo.Valor} no ha sido asignada.");
+                    //Console.WriteLine($"Error, el valor de la incógnita {nodo.Valor} no ha sido asignada.");
                     throw new Exception($"Incógnita '{nodo.Valor}' no tiene valor definido.");
                 }
             }
@@ -184,31 +220,22 @@ namespace PSO.ArbolExpresiones
                 double valor_izquierda = evaluar_nodo(nodo.Izquierda, valores_incognitas);
                 double valor_derecha = evaluar_nodo(nodo.Derecha, valores_incognitas);
 
+                //Console.WriteLine($"{valor_izquierda} {nodo.Valor} {valor_derecha}");
                 switch (nodo.Valor)
                 {
                     case "+":
-                        Console.WriteLine($"{valor_izquierda} + {valor_derecha}");
-                        Console.WriteLine(valor_izquierda + valor_derecha);
                         return valor_izquierda + valor_derecha;
                     case "-":
-                        Console.WriteLine($"{valor_izquierda} - {valor_derecha}");
-                        Console.WriteLine(valor_izquierda - valor_derecha);
                         return valor_izquierda - valor_derecha;
                     case "*":
-                        Console.WriteLine($"{valor_izquierda} * {valor_derecha}");
-                        Console.WriteLine(valor_izquierda * valor_derecha);
                         return valor_izquierda * valor_derecha;
                     case "/":
                         if (valor_derecha == 0)
                         {
                             throw new DivideByZeroException("No se puede dividir entre cero.");
                         }
-                        Console.WriteLine($"{valor_izquierda} / {valor_derecha}");
-                        Console.WriteLine(valor_izquierda / valor_derecha);
                         return valor_izquierda / valor_derecha;
                     case "^":
-                        Console.WriteLine($"{valor_izquierda} ^ {valor_derecha}");
-                        Console.WriteLine(Math.Pow(valor_izquierda, valor_derecha));
                         return Math.Pow(valor_izquierda, valor_derecha);
                     default:
                         throw new Exception($"Operador desconocido '{nodo.Valor}'.");
